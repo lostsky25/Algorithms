@@ -7,6 +7,11 @@ struct Node {
     Node<T>* next;
     Node<T>* prev;
 
+    Node() {
+        this->prev = nullptr;
+        this->next = nullptr;
+    }
+
     Node(T data, Node<T>* prev, Node<T>* next) {
         this->data = data;
         this->prev = prev;
@@ -18,63 +23,182 @@ template <class T>
 class List {
 public:
     List() {
-		sz = 0;
+        sz = 0;
         head = nullptr;
-		tail = nullptr;
+        tail = nullptr;
     }
 
-	void insert_before(Node<T>* elem, int data) {
-		Node<T>* newNode = new Node<T>(data, elem->prev, elem);
-		if (elem->prev) {
-			elem->prev->next = newNode;
-		}
-		elem->prev = newNode;
-		++sz;
-	}
+    void push_back(int data) {
+        Node<T>* tmp = new Node<T>();
+        tmp->data = data;
+        tmp->next = nullptr;
+        tmp->prev = nullptr;
 
-	void insert_after(Node<T>* elem, int data) {
-		Node<T>* newNode = new Node<T>(data, elem, elem->next);
-		if (elem->next) {
-			elem->next->prev = newNode;
-		}
-		elem->next = newNode;
-		++sz;
-	}
+        if (head == nullptr) {
+            head = tmp;
+            tail = tmp;
+        }
+        else {
+            tail->next = tmp;
+            tail->prev = head;
 
-	void push_back(T data) {
-		if (empty())
-			push_front(data);
-		else
-			insert_after(tail, data);
-	}
-
-    void push_front(T data) {
-        head = new Node<T>(data, nullptr, head);
-        // Node<T>* newNode = new Node(data, nullptr);
-        // newNode->next = head;
-        // head = newNode;
+            tail = tail->next;
+        }
+        ++sz;
     }
 
-	void erase(Node<T>* elem) {
-		if (elem->prev) {
-			elem->prev->next = elem->next;
-		}
+    void push_front(int data) {
+        Node<T>* tmp = new Node<T>();
+        tmp->data = data;
+        tmp->next = nullptr;
+        tmp->prev = nullptr;
 
-		if (elem->next) {
-			elem->next->prev = elem->prev;
-		}
-		delete elem;
-	}
-
-    void pop_back() {
-		erase(tail);
+        if (head == nullptr) {
+            head = tmp;
+            tail = tmp;
+        }
+        else {
+            tmp->next = head;
+            head->prev = tmp;
+            
+            head = tmp;
+        }
+        ++sz;
     }
 
-    void pop_front() {
-        Node<T>* nextHead = head->next;
-        delete head;
-        head = nextHead;
-        --sz;
+    void push_after_at(int index, int data) {
+        //if (head == nullptr) {
+        //    push_back(data);
+        //    return;
+        //}
+
+        if (index < size()) {
+            Node<T>* tmp = new Node<T>();
+            tmp->data = data;
+            tmp->next = nullptr;
+            tmp->prev = nullptr;
+
+            Node<T>* elem = head;
+            while (index > 0) {
+                elem = head->next;
+                --index;
+            }
+            
+            if (elem->next) {
+                tmp->next = elem->next;
+                elem->next->prev = tmp;
+
+                if (elem->next == tail) {
+                    tail = elem->next;
+                }
+            }
+            else {
+                tail = tmp;
+            }
+            elem->next = tmp;
+            tmp->prev = elem;
+            ++sz;
+        }
+        else {
+            throw "out of range";
+        }
+    }
+
+    void push_after_at(Node<T>* node, int data) {
+        if (node != nullptr) {
+            Node<T>* tmp = new Node<T>();
+            tmp->data = data;
+
+            if (node->next) {
+                node->next->prev = tmp;
+                tmp->next = node->next;
+
+                if (node->next == tail) {
+                    tail = node->next;
+                }
+            }
+            else {
+                tmp->prev = node;
+                node->next = tmp;
+                tail = tmp;
+            }
+
+            
+            ++sz;
+        }
+        else {
+            throw "out of range";
+        }
+    }    
+    
+    void push_before_at(Node<T>* node, int data) {
+        if (node != nullptr) {
+            Node<T>* tmp = new Node<T>();
+            tmp->data = data;
+
+            if (node->prev) {
+                node->prev->next = tmp;
+                tmp->prev = node->prev;
+
+                if (node->prev == head) {
+                    head = node->prev;
+                }
+            }
+            else
+            {
+                tmp->next = node;
+                node->prev = tmp;
+                head = tmp;
+            }
+
+            
+            ++sz;
+        }
+        else {
+            throw "out of range";
+        }
+    }
+
+    void push_before_at(int index, int data) {
+        //if (head == nullptr) {
+        //    push_back(data);
+        //    return;
+        //}
+
+        if (index < size()) {
+            Node<T>* tmp = new Node<T>();
+            tmp->data = data;
+            tmp->next = nullptr;
+            tmp->prev = nullptr;
+
+            Node<T>* elem = head;
+            while (index > 0) {
+                elem = head->next;
+                --index;
+            }
+
+            if (elem->prev) {
+                tmp->prev = elem->prev;
+                elem->prev->next = tmp;
+
+                if (elem->prev == head) {
+                    head = elem->prev;
+                }
+            }
+            else {
+                head = tmp;
+            }
+            elem->prev = tmp;
+            tmp->next = elem;
+            ++sz;
+        }
+        else {
+            throw "out of range";
+        }
+    }
+
+    size_t size() const {
+        return sz;
     }
 
     T& operator [] (size_t index) {
@@ -84,40 +208,21 @@ public:
         }
         return n->data;
     }
-
-    T& front() {
-        if (empty()) {
-            throw "front() called on empty forward_list";
-        }
-        return head->data;
-    }
-
-    size_t size() const {
-        return sz;
-    }
-
-    bool empty() const {
-        return sz == 0;
-    }
-
-    ~List() {
-        while (!empty())
-            pop_front();
-    }
+    Node<T>* head, * tail;
 
 private:
-    Node<T>* head,* tail;
     size_t sz;
 };
 
-int main(){
+int main() {
 
     List<int> l;
-    l.push_back(1);
-    l.push_back(2);
-    l.push_back(3);
+    l.push_back(0);
+    l.push_after_at(l.tail, 3);
+    l.push_after_at(l.tail, 2);
+    l.push_after_at(l.tail, 1);
 
-	
+
 
     // LinkedList<int> list;
 
@@ -131,114 +236,3 @@ int main(){
 
     return 0;
 }
-
-// #include <iostream>
-
-// template <typename T>
-// struct Node {
-// 	Node* prev;
-// 	Node* next;
-// 	T data;
-
-// 	Node(T data) {
-// 		this->data = data;
-// 		prev = next = nullptr;
-// 	}
-
-// 	Node(T data, Node<T>* prev, Node<T>* next) {
-// 		this->data = data;
-// 		this->prev = prev;
-// 		this->next = next;
-// 	}
-// };
-
-// template <typename T>
-// class LinkedList
-// {
-// public:
-// 	LinkedList() {
-// 		head = tail = nullptr;
-// 		sz = 0;
-// 	}
-
-// 	void insert_before(Node<T>* element, T data) {
-// 		Node<T>* newNode = new Node<T>(data, element->prev, element);
-		
-// 		std::cout << newNode << std::endl;
-
-// 		if (element->prev != nullptr)
-// 			element->prev->next = newNode;
-
-// 		element->prev = newNode;
-// 		sz++;
-// 	}
-
-// 	void insert_after(Node<T>* element, T data) {
-// 		Node<T>* newNode = new Node<T>(data, element, element->next);
-// 		std::cout << newNode << std::endl;
-// 		if (element->next != nullptr)
-// 			element->next->prev = newNode;
-
-// 		// if (head == nullptr) {
-// 		// 	head = newNode;
-// 		// 	tail = newNode;
-// 		// } else {
-// 		// 	tail->next = newNode;
-// 		// 	tail = tail->next;
-// 		// }
-
-// 		element->next = newNode;
-// 		sz++;
-// 	}
-
-// 	void push_front(T data) {
-// 		insert_after(head, data);
-// 	}
-
-// 	void push_back(T data) {
-// 		if (empty()) {
-// 			push_front(data);
-// 		}else{
-// 			insert_after(tail, data);
-// 		}
-// 	}
-
-// 	void erase(Node<T>* elem) {
-// 		if (elem->prev) {
-// 			elem->prev->next = elem->next;
-// 		}
-// 		if (elem->next) {
-// 			elem->next->prev = elem->prev;
-// 		}
-// 		delete elem;
-// 	}
-
-// 	bool empty() {
-// 		return head == nullptr;
-// 	}
-
-// 	~LinkedList() {
-
-// 	}
-
-// 	Node<T>* head, *tail;
-
-// private:
-// 	size_t sz;
-// };
-
-
-// int main() {
-// 	LinkedList<int> list;
-// 	std::cout << "1";
-
-// 	list.push_back(1);
-// 	list.push_back(2);
-// 	// list.insert_before(list.head->next, 2);
-// 	// list.insert_before(list.head->next->next, 3);
-
-// 	std::cout << "Head: " << list.head << std::endl;
-// 	std::cout << "Tail: " << list.tail << std::endl;
-
-// 	return 0;
-// }
