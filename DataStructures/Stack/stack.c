@@ -30,11 +30,16 @@ Data pop(Stack* st) {
     return res;
 }
 
+int is_empty(Stack* st) {
+    return st->n == 0;
+}
+
 int main() {
     Stack s = {{7, 4, 1}, 3};
     Stack* st = &s;
 
     init(st);
+    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // YES
     print(st);
 
     Data d;
@@ -42,6 +47,7 @@ int main() {
     printf("push %d :", d);
     push(st, 5);
     print(st);      // 5
+    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // NO
 
     d = 17;
     printf("push %d :", d);
@@ -64,5 +70,7 @@ int main() {
     d = pop(st);
     printf("pop %d :", d);
     print(st);      // pop 5:
+    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // YES
+
     return 0;
 }
