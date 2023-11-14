@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define N 8
+#define N 3
 
 typedef int Data;
 typedef struct {
@@ -34,12 +34,17 @@ int is_empty(Stack* st) {
     return st->n == 0;
 }
 
+int is_full(Stack* st) {
+    return st->n == sizeof(st->a) / sizeof(st->a[0]);
+}
+
 int main() {
     Stack s = {{7, 4, 1}, 3};
     Stack* st = &s;
 
     init(st);
     printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // YES
+    printf("full: %s\n", is_full(st) ? "YES" : "NO");       // NO
     print(st);
 
     Data d;
@@ -58,6 +63,7 @@ int main() {
     printf("push %d :", d);
     push(st, d);
     print(st);      // 5 17 -3
+    printf("full: %s\n", is_full(st) ? "YES" : "NO");       // YES
 
     d = pop(st);
     printf("pop %d :", d);
