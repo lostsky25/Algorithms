@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define N 3
+#define N 8
 
 typedef int Data;
 typedef struct {
@@ -39,43 +39,32 @@ int is_full(Stack* st) {
 }
 
 int main() {
+    Data test[N] = { 5, 17, -3, 0, 1, 2, 3, 4 };
+
     Stack s = {{7, 4, 1}, 3};
     Stack* st = &s;
 
     init(st);
-    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // YES
-    printf("full: %s\n", is_full(st) ? "YES" : "NO");       // NO
+    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");         // YES
+    printf("full: %s\n", is_full(st) ? "YES" : "NO");           // NO
     print(st);
 
     Data d;
-    d = 5;
-    printf("push %d :", d);
-    push(st, 5);
-    print(st);      // 5
-    printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // NO
+    for (int i = 0; i < N; ++i) {
+        d = test[i];
+        printf("push %d :", d);
+        push(st, d);
+        print(st);      // 5
+        printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // NO
+    }
 
-    d = 17;
-    printf("push %d :", d);
-    push(st, 17);
-    print(st);      // 5 17
+    printf("full: %s\n", is_full(st) ? "YES" : "NO");           // YES
 
-    d = -3;
-    printf("push %d :", d);
-    push(st, d);
-    print(st);      // 5 17 -3
-    printf("full: %s\n", is_full(st) ? "YES" : "NO");       // YES
-
-    d = pop(st);
-    printf("pop %d :", d);
-    print(st);      // pop -3: 5 17
-    
-    d = pop(st);
-    printf("pop %d :", d);
-    print(st);      // pop 17: 5
-    
-    d = pop(st);
-    printf("pop %d :", d);
-    print(st);      // pop 5:
+    while (!is_empty(st)) {
+        d = pop(st);
+        printf("pop %d :", d);
+        print(st);
+    }
     printf("empty: %s\n", is_empty(st) ? "YES" : "NO");     // YES
 
     return 0;
