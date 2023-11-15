@@ -60,10 +60,12 @@ int main() {
 }
 
 void destroy(Stack* st) {
-    free(st->a);
-    st->n = 0;
-    st->size = 0;
-    st->a = NULL;
+    if (st->a != NULL) {
+        free(st->a);
+        st->n = 0;
+        st->size = 0;
+        st->a = NULL;
+    }
 }
 
 void print(Stack* st) {
