@@ -1,22 +1,22 @@
-#include <iostream>
-#include <forward_list>
+#pragma once
 
 template <class T>
 struct Node {
     T data;
     Node<T>* next;
 
-    Node(T data, Node<T>* node) {
+    Node<T>::Node(T data, Node<T>* node) {
         this->data = data;
         this->next = node;
     }
 };
 
 template <class T>
-class LinkedList {
+class ForwardList {
 public:
-    LinkedList() {
+    ForwardList() {
         head = nullptr;
+        sz = 0;
     }
 
     void push_front(T data) {
@@ -57,31 +57,11 @@ public:
         return sz == 0;
     }
 
-    ~LinkedList() {
+    ~ForwardList() {
         while (!empty())
             pop_front();
     }
-
 private:
     Node<T>* head;
     size_t sz;
 };
-
-int main(){
-
-    LinkedList<int> l;
-    l.push_front(1);
-    std::cout << l.front();
-
-    // LinkedList<int> list;
-
-    // for (int i = 0; i < 10; ++i) {
-    //     list.push_front(i + 1);
-    // }
-
-    // for (int i = 0; i < list.size(); ++i) {
-    //     std::cout << &list[i] << " = " << list[i] << std::endl;
-    // }
-
-    return 0;
-}
