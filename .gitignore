@@ -1,5 +1,4 @@
 build
-external
 run.sh
 
 CMakeLists.txt.user
