@@ -1,6 +1,6 @@
 build
-external/*
-!CMakeLists.txt
+external
+run.sh
 
 CMakeLists.txt.user
 CMakeCache.txt

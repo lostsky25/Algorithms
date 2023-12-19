@@ -2,7 +2,7 @@
 
 #include "forward_list.hpp"
 
-TEST(PushFrontElements, Subtest_1) {
+TEST(ForwardList, PushFront) {
     ForwardList<int> fl;
 
     for (int i = 0; i < 100; i++) {
@@ -16,7 +16,7 @@ TEST(PushFrontElements, Subtest_1) {
     ASSERT_TRUE(fl.size() == 100);
 }
 
-TEST(PopFrontElements, Subtest_2) {
+TEST(ForwardList, PopFront) {
     ForwardList<int> fl;
 
     for (int i = 0; i < 100; i++) {

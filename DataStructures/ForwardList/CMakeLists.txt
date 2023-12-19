@@ -11,9 +11,9 @@ set(
 add_library(LinkedList SHARED ${Sources} ${Headers})
 
 if (BUILD_TESTING)
-    add_executable(tests test.cpp)
-    target_link_libraries(tests PRIVATE GTest::gtest_main)
+    add_executable(LinkedListTests test.cpp)
+    target_link_libraries(LinkedListTests PRIVATE GTest::gtest_main)
 
     include(GoogleTest)
-    gtest_discover_tests(tests)
+    gtest_discover_tests(LinkedListTests)
 endif()

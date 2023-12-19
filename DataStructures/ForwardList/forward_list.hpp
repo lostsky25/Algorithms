@@ -1,29 +1,28 @@
 #pragma once
 
+#include <cstddef>
+
 template <class T>
 struct Node {
     T data;
     Node<T>* next;
 
-    Node<T>::Node(T data, Node<T>* node) {
-        this->data = data;
-        this->next = node;
+    Node(T data, Node<T>* next) :
+        data(data),
+        next(next) {
     }
 };
 
 template <class T>
 class ForwardList {
 public:
-    ForwardList() {
-        head = nullptr;
-        sz = 0;
+    ForwardList() :
+        head(nullptr),
+        sz(0) {
     }
 
     void push_front(T data) {
         head = new Node<T>(data, head);
-        // Node<T>* newNode = new Node(data, nullptr);
-        // newNode->next = head;
-        // head = newNode;
         ++sz;
     }
 

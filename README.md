@@ -1,10 +1,6 @@
 # How to build
 
 ```bash
-git submodule update --init --recursive
-```
-
-```bash
 cmake -S . -B build
 cmake --build build
 ```

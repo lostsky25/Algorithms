@@ -12,3 +12,4 @@ add_subdirectory(external)
 
 # Data Structures
 add_subdirectory(DataStructures/ForwardList)
+add_subdirectory(DataStructures/DoublyLinkedList)
