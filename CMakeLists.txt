@@ -13,5 +13,5 @@ add_subdirectory(external)
 # Data Structures
 add_subdirectory(DataStructures/ForwardList)
 add_subdirectory(DataStructures/DoublyLinkedList)
-add_subdirectory(DataStructures/BinarySearchTree)
 add_subdirectory(DataStructures/Stack)
+add_subdirectory(DataStructures/StackWithContainer)
